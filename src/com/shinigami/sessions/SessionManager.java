@@ -68,30 +68,30 @@ public class SessionManager {
 	
 			Properties props = Utils.loadFile(file);
 				
-			if(props.contains("acccount")){
+			if(props.getProperty("acccount") != null){
 				session.setAccCount((Integer.parseInt(props.getProperty("acccount"))));
 				if(session.getAccCount() == 3){
-					session.setAcc1CharName("1.charname");
+					session.setAcc1CharName(props.getProperty("1.charname"));
 					session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
 					session.setAcc1Profession(props.getProperty("1.profession"));
 					
-					session.setAcc2CharName("2.charname");
+					session.setAcc2CharName(props.getProperty("2.charname"));
 					session.setAcc2Money(Integer.parseInt(props.getProperty("2.moneyBank") + Integer.parseInt(props.getProperty("2.moneyInPocket"))));
 					session.setAcc2Profession(props.getProperty("2.profession"));
-					
-					session.setAcc3CharName("3.charname");
+
+					session.setAcc3CharName(props.getProperty("3.charname"));
 					session.setAcc3Money(Integer.parseInt(props.getProperty("3.moneyBank") + Integer.parseInt(props.getProperty("3.moneyInPocket"))));
 					session.setAcc3Profession(props.getProperty("3.profession"));
 				}else if(session.getAccCount() == 2){
-					session.setAcc1CharName("1.charname");
+					session.setAcc1CharName(props.getProperty("1.charname"));
 					session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
 					session.setAcc1Profession(props.getProperty("1.profession"));
-					
-					session.setAcc2CharName("2.charname");
+
+					session.setAcc2CharName(props.getProperty("2.charname"));
 					session.setAcc2Money(Integer.parseInt(props.getProperty("2.moneyBank") + Integer.parseInt(props.getProperty("2.moneyInPocket"))));
 					session.setAcc2Profession(props.getProperty("2.profession"));
 				}else if(session.getAccCount() == 1){
-					session.setAcc1CharName("1.charname");
+					session.setAcc1CharName(props.getProperty("1.charname"));
 					session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
 					session.setAcc1Profession(props.getProperty("1.profession"));
 				}
@@ -102,31 +102,6 @@ public class SessionManager {
 			session.setUuid(p.getUniqueId() + "");
 			
 			sessions.put(p.getUniqueId() + "", session);
-		}else{
-			Session session = getSession(p.getUniqueId() + "");
-			
-			File file = new File(dir + "/" + p.getUniqueId() + ".yml");
-			if(!file.exists()){
-				try {
-					file.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-	
-			Properties props = Utils.loadFile(file);
-			
-			session.setAccCount((Integer.parseInt(props.getProperty("acccount"))));
-			if(session.getAccCount() == 3){
-				session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
-				session.setAcc2Money(Integer.parseInt(props.getProperty("2.moneyBank") + Integer.parseInt(props.getProperty("2.moneyInPocket"))));
-				session.setAcc3Money(Integer.parseInt(props.getProperty("3.moneyBank") + Integer.parseInt(props.getProperty("3.moneyInPocket"))));
-			}else if(session.getAccCount() == 2){
-				session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
-				session.setAcc2Money(Integer.parseInt(props.getProperty("2.moneyBank") + Integer.parseInt(props.getProperty("2.moneyInPocket"))));
-			}else if(session.getAccCount() == 1){
-				session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
-			}
 		}
 	}
 	
@@ -137,6 +112,7 @@ public class SessionManager {
 		Properties props = Utils.loadFile(file);
 		
 		session.setJoined(true);
+		session.setAccNumLoggedIn(accNum);
 		if(!props.contains(accNum + ".default_channel")){
 			session.setChannel(Configuration.getConfig().getEntry("default_channel"));
 			session.setMoneyBank(Integer.parseInt(Configuration.getConfig().getEntry("start_money")));
@@ -215,47 +191,51 @@ public class SessionManager {
 
 	public void saveAll(){
 		for(Session session : sessions.values()) {
-			File file = new File(dir + "/" + session.getUuid() + ".yml");
-			
-			if(!file.exists()){
-				try {
-					file.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			Properties props = Utils.loadFile(file);
-			
-			props.setProperty("acccount", session.getAccCount() + "");
-			props.setProperty("1.charname", session.getAcc1CharName() + "");
-			props.setProperty("1.profession", session.getAcc1Profession() + "");
-			props.setProperty("2.charname", session.getAcc2CharName() + "");
-			props.setProperty("2.profession", session.getAcc2Profession() + "");
-			props.setProperty("3.charname", session.getAcc3CharName() + "");
-			props.setProperty("3.profession", session.getAcc3Profession() + "");
-			props.setProperty(session.getAccNumLoggedIn() + ".moneyBank", session.getMoneyBank() + "");
-			props.setProperty(session.getAccNumLoggedIn() + ".moneyInPocket", session.getMoneyInPocket() + "");
-			props.setProperty(session.getAccNumLoggedIn() + ".invSize", session.getInvSize() + "");
-			props.setProperty(session.getAccNumLoggedIn() + ".alcoholPromile", session.getAlcoholPromile() + "");
-			props.setProperty(session.getAccNumLoggedIn() + ".drugsInBlood", session.getDrugsInBlood() + "");
-			props.setProperty(session.getAccNumLoggedIn() + ".garageLand", session.getGarageLand().save());
-			props.setProperty(session.getAccNumLoggedIn() + ".garageWater", session.getGarageWater().save());
-			props.setProperty(session.getAccNumLoggedIn() + ".eatLevel", session.getEatLevel() + "");
-			props.setProperty(session.getAccNumLoggedIn() + ".drinkLevel", session.getDrinkLevel() + "");
-			props.setProperty(session.getAccNumLoggedIn() + ".grade", session.getGrade() + "");
-			
-			for(String s : Licence.LICENCES){
-				props.setProperty(session.getAccNumLoggedIn() + "." + s, session.getLicences().get(s) + "");
-			}
-			
+			save(session);
+		}
+	}
+	
+	public void save(Session session){
+		File file = new File(dir + "/" + session.getUuid() + ".yml");
+		
+		if(!file.exists()){
 			try {
-				FileOutputStream fileOut = new FileOutputStream(file);
-				props.store(fileOut, null);
-				fileOut.close();
+				file.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+		
+		Properties props = Utils.loadFile(file);
+		
+		props.setProperty("acccount", session.getAccCount() + "");
+		props.setProperty("1.charname", session.getAcc1CharName() + "");
+		props.setProperty("1.profession", session.getAcc1Profession() + "");
+		props.setProperty("2.charname", session.getAcc2CharName() + "");
+		props.setProperty("2.profession", session.getAcc2Profession() + "");
+		props.setProperty("3.charname", session.getAcc3CharName() + "");
+		props.setProperty("3.profession", session.getAcc3Profession() + "");
+		props.setProperty(session.getAccNumLoggedIn() + ".moneyBank", session.getMoneyBank() + "");
+		props.setProperty(session.getAccNumLoggedIn() + ".moneyInPocket", session.getMoneyInPocket() + "");
+		props.setProperty(session.getAccNumLoggedIn() + ".invSize", session.getInvSize() + "");
+		props.setProperty(session.getAccNumLoggedIn() + ".alcoholPromile", session.getAlcoholPromile() + "");
+		props.setProperty(session.getAccNumLoggedIn() + ".drugsInBlood", session.getDrugsInBlood() + "");
+		props.setProperty(session.getAccNumLoggedIn() + ".garageLand", session.getGarageLand().save());
+		props.setProperty(session.getAccNumLoggedIn() + ".garageWater", session.getGarageWater().save());
+		props.setProperty(session.getAccNumLoggedIn() + ".eatLevel", session.getEatLevel() + "");
+		props.setProperty(session.getAccNumLoggedIn() + ".drinkLevel", session.getDrinkLevel() + "");
+		props.setProperty(session.getAccNumLoggedIn() + ".grade", session.getGrade() + "");
+		
+		for(String s : Licence.LICENCES){
+			props.setProperty(session.getAccNumLoggedIn() + "." + s, session.getLicences().get(s) + "");
+		}
+		
+		try {
+			FileOutputStream fileOut = new FileOutputStream(file);
+			props.store(fileOut, null);
+			fileOut.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

@@ -67,10 +67,6 @@ public class PlayerListener implements Listener {
 		
 		if(ShinigamiLife.isLoaded()){
 	
-			if(p.getVehicle() != null){
-				p.getVehicle().setPassenger(null);
-			}
-			
 			event.setJoinMessage(Colors.DARK_GREY + p.getName() + " connected");
 			Messages.sendWelcomeMsg(p);
 			
@@ -101,6 +97,7 @@ public class PlayerListener implements Listener {
 //		ShinigamiLife.getPoliceManager().logOutAsCop(p, session);
 		session.setJoinTimer(0);
 		session.setJoined(false);
+		session.setCharChoiceShowed(false);
 		session.setSpawned(false);
 		
 		event.setQuitMessage(Colors.DARK_GREY + p.getName() + " disconnected");

@@ -307,29 +307,26 @@ public class ShinigamiCmdExecutor implements CommandExecutor {
 						p.sendMessage("Create Character with name " + charname + ".");
 						p.sendMessage("You're now playing as " + charname + ".");
 						
-						session.setAccCount(session.getAccCount()+1);
 						if(session.getAccCount() == 0){
 							session.setAcc1CharName(charname);
 							session.setAcc1Profession("civ");
 							session.setProfession("civ");
 							session.setCharname(charname);
-							session.setAccNumLoggedIn(1);
 							ShinigamiLife.getSessionManager().loadData(p, 1);
 						}else if(session.getAccCount() == 1){
 							session.setAcc2CharName(charname);
 							session.setAcc2Profession("civ");
 							session.setProfession("civ");
 							session.setCharname(charname);
-							session.setAccNumLoggedIn(2);
 							ShinigamiLife.getSessionManager().loadData(p, 2);
 						}else if(session.getAccCount() == 2){
 							session.setAcc3CharName(charname);
 							session.setAcc3Profession("civ");
 							session.setProfession("civ");
 							session.setCharname(charname);
-							session.setAccNumLoggedIn(3);
 							ShinigamiLife.getSessionManager().loadData(p, 3);
 						}
+						session.setAccCount(session.getAccCount()+1);
 						
 					}else{
 						p.sendMessage(Colors.RED + "Du musst das Command so benutzen:");
