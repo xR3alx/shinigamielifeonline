@@ -54,114 +54,162 @@ public class SessionManager {
 	
 	@SuppressWarnings("deprecation")
 	public void createSession(Player p) {
-		
-		if(!sessions.containsKey(p.getUniqueId() + "")){
+		if(getSession(p.getUniqueId() + "") == null){
 			Session session = new Session();
-		
+			
 			File file = new File(dir + "/" + p.getUniqueId() + ".yml");
 			if(!file.exists()){
-				session.setPlayerName(p.getName());
-				session.setUuid(p.getUniqueId() + "");
-				session.setChannel(Configuration.getConfig().getEntry("default_channel"));
-				session.setMoneyBank(Integer.parseInt(Configuration.getConfig().getEntry("start_money")));
-				session.setMoneyBankC(Integer.parseInt(Configuration.getConfig().getEntry("start_money_cop")));
-				session.setInvSize(Integer.parseInt(Configuration.getConfig().getEntry("invSize")));
-				session.setInvSizeC(Integer.parseInt(Configuration.getConfig().getEntry("invSizeC")));
-				session.setGarageLand(new Garage());
-				session.setGarageLandC(new Garage());
-				session.setGarageWater(new Garage());
-				session.setGarageWaterC(new Garage());
-				session.setPlayerInv(Bukkit.createInventory(p, InventoryType.PLAYER));
-				session.getPlayerInv().setContents(p.getInventory().getContents());
-				session.setArmor(p.getInventory().getArmorContents());
-				session.setDrinkLevel(20);
-				session.setEatLevel(20);
-				p.setHealthScaled(true);
-				p.setHealthScale(40);
-				p.setMaxHealth(40);
-				p.setLevel(20);
-				p.setFoodLevel(20);
-				
-				session.setShootables(new HashMap<String, Boolean>());
-				session.setShootTimers(new HashMap<String, Float>());
-				session.setShootTimersMax(new HashMap<String, Float>());
-				session.setHouses(new HashMap<String, House>());
-				session.setHorses(new ArrayList<Horse>());
-				session.setBoats(new ArrayList<Boat>());
-
-				HashMap<String, Boolean> licences = new HashMap<String, Boolean>();
-				HashMap<String, Boolean> licencesC = new HashMap<String, Boolean>();
-				session.setLicences(licences);
-				session.setLicencesC(licencesC);
-				
-				changeInv(session, p);
-				sessions.put(p.getUniqueId() + "", session);
-			}else{
-				Properties props = Utils.loadFile(file);
-				
-				session.setPlayerName(p.getName());
-				session.setUuid(p.getUniqueId() + "");
-				session.setChannel(Configuration.getConfig().getEntry("default_channel"));
-				session.setMoneyBank(Integer.parseInt(props.getProperty("moneyBank")));
-				session.setMoneyBankC(Integer.parseInt(props.getProperty("moneyBankC")));
-				session.setMoneyInPocket(Integer.parseInt(props.getProperty("moneyInPocket")));
-				session.setMoneyInPocketC(Integer.parseInt(props.getProperty("moneyInPocketC")));
-				session.setInvSize(Integer.parseInt(props.getProperty("invSize")));
-				session.setInvSizeC(Integer.parseInt(props.getProperty("invSizeC")));
-				session.setAlcoholPromile(Float.parseFloat(props.getProperty("alcoholPromile")));
-				session.setDrugsInBlood(Float.parseFloat(props.getProperty("drugsInBlood")));
-				session.setGarageLand(new Garage());
-				session.getGarageLand().load(props.getProperty("garageLand"));
-				session.setGarageLandC(new Garage());
-				session.getGarageLand().load(props.getProperty("garageLandC"));
-				session.setGarageWater(new Garage());
-				session.getGarageLand().load(props.getProperty("garageWater"));
-				session.setGarageWaterC(new Garage());
-				session.getGarageLand().load(props.getProperty("garageWaterC"));
-				session.setEatLevel(Integer.parseInt(props.getProperty("eatLevel")));
-				session.setDrinkLevel(Integer.parseInt(props.getProperty("drinkLevel")));
-				session.setPlayerInv(Bukkit.createInventory(p, InventoryType.PLAYER));
-				session.getPlayerInv().setContents(p.getInventory().getContents());
-				session.setArmor(p.getInventory().getArmorContents());
-				p.setHealthScaled(true);
-				p.setHealthScale(40);
-				p.setMaxHealth(40);
-				p.setLevel(session.getDrinkLevel());
-				p.setFoodLevel(session.getEatLevel());
-				
-				session.setGrade(Integer.parseInt(props.getProperty("grade")));
-				
-				session.setShootables(new HashMap<String, Boolean>());
-				session.setShootTimers(new HashMap<String, Float>());
-				session.setShootTimersMax(new HashMap<String, Float>());
-				session.setHouses(new HashMap<String, House>());
-				session.setHorses(new ArrayList<Horse>());
-				session.setBoats(new ArrayList<Boat>());
-				
-				HashMap<String, Boolean> licences = new HashMap<String, Boolean>();
-				HashMap<String, Boolean> licencesC = new HashMap<String, Boolean>();
-				
-				for(String s : Licence.LICENCES){
-					licences.put(s, Boolean.parseBoolean(props.getProperty(s)));
-					licencesC.put(s, Boolean.parseBoolean(props.getProperty(s+"C")));
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				
-				session.setLicences(licences);
-				session.setLicencesC(licencesC);
-				
-				changeInv(session, p);
-				sessions.put(p.getUniqueId() + "", session);
 			}
+	
+			Properties props = Utils.loadFile(file);
+				
+			if(props.contains("acccount")){
+				session.setAccCount((Integer.parseInt(props.getProperty("acccount"))));
+				if(session.getAccCount() == 3){
+					session.setAcc1CharName("1.charname");
+					session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
+					session.setAcc1Profession(props.getProperty("1.profession"));
+					
+					session.setAcc2CharName("2.charname");
+					session.setAcc2Money(Integer.parseInt(props.getProperty("2.moneyBank") + Integer.parseInt(props.getProperty("2.moneyInPocket"))));
+					session.setAcc2Profession(props.getProperty("2.profession"));
+					
+					session.setAcc3CharName("3.charname");
+					session.setAcc3Money(Integer.parseInt(props.getProperty("3.moneyBank") + Integer.parseInt(props.getProperty("3.moneyInPocket"))));
+					session.setAcc3Profession(props.getProperty("3.profession"));
+				}else if(session.getAccCount() == 2){
+					session.setAcc1CharName("1.charname");
+					session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
+					session.setAcc1Profession(props.getProperty("1.profession"));
+					
+					session.setAcc2CharName("2.charname");
+					session.setAcc2Money(Integer.parseInt(props.getProperty("2.moneyBank") + Integer.parseInt(props.getProperty("2.moneyInPocket"))));
+					session.setAcc2Profession(props.getProperty("2.profession"));
+				}else if(session.getAccCount() == 1){
+					session.setAcc1CharName("1.charname");
+					session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
+					session.setAcc1Profession(props.getProperty("1.profession"));
+				}
+			}else{
+				session.setAccCount(0);
+			}
+			session.setPlayerName(p.getName());
+			session.setUuid(p.getUniqueId() + "");
+			
+			sessions.put(p.getUniqueId() + "", session);
 		}else{
 			Session session = getSession(p.getUniqueId() + "");
+			
+			File file = new File(dir + "/" + p.getUniqueId() + ".yml");
+			if(!file.exists()){
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+	
+			Properties props = Utils.loadFile(file);
+			
+			session.setAccCount((Integer.parseInt(props.getProperty("acccount"))));
+			if(session.getAccCount() == 3){
+				session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
+				session.setAcc2Money(Integer.parseInt(props.getProperty("2.moneyBank") + Integer.parseInt(props.getProperty("2.moneyInPocket"))));
+				session.setAcc3Money(Integer.parseInt(props.getProperty("3.moneyBank") + Integer.parseInt(props.getProperty("3.moneyInPocket"))));
+			}else if(session.getAccCount() == 2){
+				session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
+				session.setAcc2Money(Integer.parseInt(props.getProperty("2.moneyBank") + Integer.parseInt(props.getProperty("2.moneyInPocket"))));
+			}else if(session.getAccCount() == 1){
+				session.setAcc1Money(Integer.parseInt(props.getProperty("1.moneyBank") + Integer.parseInt(props.getProperty("1.moneyInPocket"))));
+			}
+		}
+	}
+	
+	public void loadData(Player p, int accNum){
+		Session session = getSession(p.getUniqueId() + "");
+		
+		File file = new File(dir + "/" + p.getUniqueId() + ".yml");
+		Properties props = Utils.loadFile(file);
+		
+		session.setJoined(true);
+		if(!props.contains(accNum + ".default_channel")){
+			session.setChannel(Configuration.getConfig().getEntry("default_channel"));
+			session.setMoneyBank(Integer.parseInt(Configuration.getConfig().getEntry("start_money")));
+			session.setInvSize(Integer.parseInt(Configuration.getConfig().getEntry("invSize")));
+			session.setAccNumLoggedIn(accNum);
+			session.setGarageLand(new Garage());
+			session.setGarageWater(new Garage());
+			session.setPlayerInv(Bukkit.createInventory(p, InventoryType.PLAYER));
+			session.getPlayerInv().setContents(p.getInventory().getContents());
+			session.setArmor(p.getInventory().getArmorContents());
 			session.setDrinkLevel(20);
 			session.setEatLevel(20);
+			p.setHealthScaled(true);
+			p.setHealthScale(40);
+			p.setMaxHealth(40);
+			p.setLevel(20);
+			p.setFoodLevel(20);
 			
+			session.setShootables(new HashMap<String, Boolean>());
+			session.setShootTimers(new HashMap<String, Float>());
+			session.setShootTimersMax(new HashMap<String, Float>());
+			session.setHouses(new HashMap<String, House>());
+			session.setHorses(new ArrayList<Horse>());
+			session.setBoats(new ArrayList<Boat>());
+
+			HashMap<String, Boolean> licences = new HashMap<String, Boolean>();
+			session.setLicences(licences);
+			
+			changeInv(session, p);
+			sessions.put(p.getUniqueId() + "", session);
+		}else{
+			
+			session.setChannel(Configuration.getConfig().getEntry("default_channel"));
+			session.setMoneyBank(Integer.parseInt(props.getProperty(accNum + ".moneyBank")));
+			session.setMoneyInPocket(Integer.parseInt(props.getProperty(accNum + ".moneyInPocket")));
+			session.setInvSize(Integer.parseInt(props.getProperty(accNum + ".invSize")));
+			session.setAlcoholPromile(Float.parseFloat(props.getProperty(accNum + ".alcoholPromile")));
+			session.setDrugsInBlood(Float.parseFloat(props.getProperty(accNum + ".drugsInBlood")));
+			session.setAccNumLoggedIn(accNum);
+			session.setGarageLand(new Garage());
+			session.getGarageLand().load(props.getProperty(accNum + ".garageLand"));
+			session.setGarageWater(new Garage());
+			session.getGarageLand().load(props.getProperty(accNum + ".garageWater"));
+			session.setEatLevel(Integer.parseInt(props.getProperty(accNum + ".eatLevel")));
+			session.setDrinkLevel(Integer.parseInt(props.getProperty(accNum + ".drinkLevel")));
+			session.setPlayerInv(Bukkit.createInventory(p, InventoryType.PLAYER));
+			session.getPlayerInv().setContents(p.getInventory().getContents());
+			session.setArmor(p.getInventory().getArmorContents());
 			p.setHealthScaled(true);
 			p.setHealthScale(40);
 			p.setMaxHealth(40);
 			p.setLevel(session.getDrinkLevel());
 			p.setFoodLevel(session.getEatLevel());
+			
+			session.setGrade(Integer.parseInt(props.getProperty("grade")));
+			
+			session.setShootables(new HashMap<String, Boolean>());
+			session.setShootTimers(new HashMap<String, Float>());
+			session.setShootTimersMax(new HashMap<String, Float>());
+			session.setHouses(new HashMap<String, House>());
+			session.setHorses(new ArrayList<Horse>());
+			session.setBoats(new ArrayList<Boat>());
+				
+			HashMap<String, Boolean> licences = new HashMap<String, Boolean>();
+			
+			for(String s : Licence.LICENCES){
+				licences.put(s, Boolean.parseBoolean(props.getProperty(s)));
+			}
+				
+			session.setLicences(licences);
+				
+			changeInv(session, p);
+			sessions.put(p.getUniqueId() + "", session);
 		}
 	}
 
@@ -179,25 +227,26 @@ public class SessionManager {
 			
 			Properties props = Utils.loadFile(file);
 			
-			props.setProperty("moneyBank", session.getMoneyBank() + "");
-			props.setProperty("moneyBankC", session.getMoneyBankC() + "");
-			props.setProperty("moneyInPocket", session.getMoneyInPocket() + "");
-			props.setProperty("moneyInPocketC", session.getMoneyInPocketC() + "");
-			props.setProperty("invSize", session.getInvSize() + "");
-			props.setProperty("invSizeC", session.getInvSizeC() + "");
-			props.setProperty("alcoholPromile", session.getAlcoholPromile() + "");
-			props.setProperty("drugsInBlood", session.getDrugsInBlood() + "");
-			props.setProperty("garageLand", session.getGarageLand().save());
-			props.setProperty("garageLandC", session.getGarageLandC().save());
-			props.setProperty("garageWater", session.getGarageWater().save());
-			props.setProperty("garageWaterC", session.getGarageWaterC().save());
-			props.setProperty("eatLevel", session.getEatLevel() + "");
-			props.setProperty("drinkLevel", session.getDrinkLevel() + "");
-			props.setProperty("grade", session.getGrade() + "");
+			props.setProperty("acccount", session.getAccCount() + "");
+			props.setProperty("1.charname", session.getAcc1CharName() + "");
+			props.setProperty("1.profession", session.getAcc1Profession() + "");
+			props.setProperty("2.charname", session.getAcc2CharName() + "");
+			props.setProperty("2.profession", session.getAcc2Profession() + "");
+			props.setProperty("3.charname", session.getAcc3CharName() + "");
+			props.setProperty("3.profession", session.getAcc3Profession() + "");
+			props.setProperty(session.getAccNumLoggedIn() + ".moneyBank", session.getMoneyBank() + "");
+			props.setProperty(session.getAccNumLoggedIn() + ".moneyInPocket", session.getMoneyInPocket() + "");
+			props.setProperty(session.getAccNumLoggedIn() + ".invSize", session.getInvSize() + "");
+			props.setProperty(session.getAccNumLoggedIn() + ".alcoholPromile", session.getAlcoholPromile() + "");
+			props.setProperty(session.getAccNumLoggedIn() + ".drugsInBlood", session.getDrugsInBlood() + "");
+			props.setProperty(session.getAccNumLoggedIn() + ".garageLand", session.getGarageLand().save());
+			props.setProperty(session.getAccNumLoggedIn() + ".garageWater", session.getGarageWater().save());
+			props.setProperty(session.getAccNumLoggedIn() + ".eatLevel", session.getEatLevel() + "");
+			props.setProperty(session.getAccNumLoggedIn() + ".drinkLevel", session.getDrinkLevel() + "");
+			props.setProperty(session.getAccNumLoggedIn() + ".grade", session.getGrade() + "");
 			
 			for(String s : Licence.LICENCES){
-				props.setProperty(s, session.getLicences().get(s) + "");
-				props.setProperty(s+"C", session.getLicencesC().get(s) + "");
+				props.setProperty(session.getAccNumLoggedIn() + "." + s, session.getLicences().get(s) + "");
 			}
 			
 			try {
@@ -217,11 +266,7 @@ public class SessionManager {
 	@SuppressWarnings("deprecation")
 	public void changeInv(Session session, Player p){
 		int invSize = 0;
-		if(session.isLoggedInAsCop()){
-			invSize = session.getInvSizeC();
-		}else{
-			invSize = session.getInvSize();
-		}
+		invSize = session.getInvSize();
 		ItemStack restricted = new ItemStack(52);
 		ItemMeta meta = restricted.getItemMeta();
 		meta.setDisplayName(Colors.RED + "[Gesperrt]");
@@ -278,34 +323,35 @@ public class SessionManager {
 				Session session = entry.getValue();
 				Player p = Bukkit.getPlayer(session.getPlayerName());
 				
-				for(Entry<String, Boolean> entry1 : session.getShootables().entrySet()){
-					boolean shot = entry1.getValue();
-					float timer = session.getShootTimers().get(entry1.getKey());
-					float timerMax = session.getShootTimersMax().get(entry1.getKey());
-					
-					if(!shot){
-						if(timer == timerMax){
-							session.getShootTimers().put(entry1.getKey(), 0f);
-							session.getShootables().put(entry1.getKey(), true);
-						}else{
-							session.getShootTimers().put(entry1.getKey(), timer + 0.1f);
-						}
-					}
-				}
-				
-				if(session.isZoomed()){
-					if(p.getItemInHand().hasItemMeta()){
-						if(p.getItemInHand().getItemMeta().getDisplayName() != null && !p.getItemInHand().getItemMeta().getDisplayName().equals("")){
-							if(!p.getItemInHand().getItemMeta().getDisplayName().contains("[S]") && !p.getItemInHand().getItemMeta().getDisplayName().contains("Fernglass")){
-								session.setZoomed(false);
-								p.removePotionEffect(PotionEffectType.SLOW);
+				if(session.isJoined())
+					for(Entry<String, Boolean> entry1 : session.getShootables().entrySet()){
+						boolean shot = entry1.getValue();
+						float timer = session.getShootTimers().get(entry1.getKey());
+						float timerMax = session.getShootTimersMax().get(entry1.getKey());
+						
+						if(!shot){
+							if(timer == timerMax){
+								session.getShootTimers().put(entry1.getKey(), 0f);
+								session.getShootables().put(entry1.getKey(), true);
+							}else{
+								session.getShootTimers().put(entry1.getKey(), timer + 0.1f);
 							}
 						}
-					}else{
-						session.setZoomed(false);
-						p.removePotionEffect(PotionEffectType.SLOW);
 					}
-				}
+					
+					if(session.isZoomed()){
+						if(p.getItemInHand().hasItemMeta()){
+							if(p.getItemInHand().getItemMeta().getDisplayName() != null && !p.getItemInHand().getItemMeta().getDisplayName().equals("")){
+								if(!p.getItemInHand().getItemMeta().getDisplayName().contains("[S]") && !p.getItemInHand().getItemMeta().getDisplayName().contains("Fernglass")){
+									session.setZoomed(false);
+									p.removePotionEffect(PotionEffectType.SLOW);
+								}
+							}
+						}else{
+							session.setZoomed(false);
+							p.removePotionEffect(PotionEffectType.SLOW);
+						}
+					}
 			}
 		}
 	}
@@ -318,318 +364,315 @@ public class SessionManager {
 				Player p = Bukkit.getPlayer(session.getPlayerName());
 				
 				if(p != null){
-					if(!session.isSpawned() || !session.isSpawned()){
-						if(session.getJoinTimer() == 2){
-							ShinigamiLife.getMenuManager().open(p, session, "sidemenu");
-							session.setJoinTimer(0);
-						}else{
-							session.setJoinTimer(session.getJoinTimer() + 1);
-						}
+					if(!session.isCharChoiceShowed()){
+						ShinigamiLife.getMenuManager().open(p, session, "account");
+						session.setCharChoiceShowed(true);
 					}
 					
-					
-					if(session.getTaxTimer() == Integer.parseInt(Configuration.getConfig().getEntry("tax_time"))){
-						session.setTaxTimer(0);
-						for(Player player : javaPlugin.getServer().getOnlinePlayers()){
-							if(session.getPlayerName().equals("" + player.getUniqueId())){
-								if(session.getSide().equals("civ")){
-									session.setMoneyBank(session.getMoneyBank()
-											+ Integer.parseInt(Configuration.getConfig().getEntry("tax")));
-									player.sendMessage(Colors.GREY + "Du hast dein Gehalt in der höhe von " + Colors.DARK_GREEN + Integer.parseInt(Configuration.getConfig().getEntry("tax")) + Colors.GREY + " erhalten.");
-									player.sendMessage(Colors.GREY + "Dein nächstes Gehalt erhälst du in " + Colors.DARK_GREY + (Integer.parseInt(Configuration.getConfig().getEntry("tax_time")) / 60) + Colors.GREY + " minuten.");
-								}else if(session.getSide().equals("cop")){
-									session.setMoneyBank(session.getMoneyBank()
-											+ Integer.parseInt(Configuration.getConfig().getEntry("tax_cop")));
-									player.sendMessage(Colors.GREY + "Du hast dein Gehalt in der höhe von " + Colors.DARK_GREEN + Integer.parseInt(Configuration.getConfig().getEntry("tax_cop")) + Colors.GREY + " erhalten.");
-									player.sendMessage(Colors.GREY + "Dein nächstes Gehalt erhälst du in " + Colors.DARK_GREY + (Integer.parseInt(Configuration.getConfig().getEntry("tax_time")) / 60) + Colors.GREY + " minuten.");
+					if(session.isJoined()){
+						if(session.getTaxTimer() == Integer.parseInt(Configuration.getConfig().getEntry("tax_time"))){
+							session.setTaxTimer(0);
+							for(Player player : javaPlugin.getServer().getOnlinePlayers()){
+								if(session.getPlayerName().equals("" + player.getUniqueId())){
+									if(session.getProfession().equals("civ")){
+										session.setMoneyBank(session.getMoneyBank()
+												+ Integer.parseInt(Configuration.getConfig().getEntry("tax")));
+										player.sendMessage(Colors.GREY + "Du hast dein Gehalt in der höhe von " + Colors.DARK_GREEN + Integer.parseInt(Configuration.getConfig().getEntry("tax")) + Colors.GREY + " erhalten.");
+										player.sendMessage(Colors.GREY + "Dein nächstes Gehalt erhälst du in " + Colors.DARK_GREY + (Integer.parseInt(Configuration.getConfig().getEntry("tax_time")) / 60) + Colors.GREY + " minuten.");
+									}else if(session.getProfession().equals("cop")){
+										session.setMoneyBank(session.getMoneyBank()
+												+ Integer.parseInt(Configuration.getConfig().getEntry("tax_cop")));
+										player.sendMessage(Colors.GREY + "Du hast dein Gehalt in der höhe von " + Colors.DARK_GREEN + Integer.parseInt(Configuration.getConfig().getEntry("tax_cop")) + Colors.GREY + " erhalten.");
+										player.sendMessage(Colors.GREY + "Dein nächstes Gehalt erhälst du in " + Colors.DARK_GREY + (Integer.parseInt(Configuration.getConfig().getEntry("tax_time")) / 60) + Colors.GREY + " minuten.");
+									}
+									break;
 								}
-								break;
 							}
-						}
-					}else{
-						session.setTaxTimer(session.getTaxTimer() + 1);
-					}
-					
-//					List<Entity> entitiesInSight = p.getNearbyEntities(140, 140, 140);
-//					for(Entity entity : entitiesInSight){
-//						if(entity instanceof Player){
-//							Player pInSight = (Player) entity;
-//							if(p.canSee(pInSight)){
-//								p.showPlayer(pInSight);
-//							}else{
-//								p.hidePlayer(pInSight);
-//							}
-//						}
-//					}
-					
-					p.setLevel(session.getDrinkLevel());
-					p.setExp(0);
-					session.setDrinkTimer(session.getDrinkTimer() + 1);
-					if(session.getDrinkTimer() > 1200){
-						session.setDrinkTimer(0);
-						session.setDrinkLevel(session.getDrinkLevel() - 1);
-						if(session.getDrinkLevel() > 20){
-							session.setDrinkLevel(20);
-						}
-						if(p.getLevel() < 20 / 3){
-							p.sendMessage(Colors.GREY + "Du hast schon lange nichts mehr getrunken...");
-						}
-						if(session.getDrinkLevel() == 0){
-							p.damage(0.5);
-						}
-					}
-	
-					p.setFoodLevel(session.getEatLevel());
-					session.setEatTimer(session.getEatTimer() + 1);
-					if(session.getEatTimer() > 1200){
-						session.setEatTimer(0);
-						session.setEatLevel(session.getEatLevel() - 1);
-						if(p.getFoodLevel() < 20 / 3){
-							p.sendMessage(Colors.GREY + "Du hast schon lange nichts mehr gegessen...");
-						}
-						if(session.getEatLevel() == 0){
-							p.damage(0.5);
-						}
-					}
-					
-					if(session.isSmoking()){
-						if(p.getItemInHand().getType() == Material.STICK && p.getItemInHand().getItemMeta().getDisplayName().equals(Colors.GREY + "Zigarrete")){
-							PlayerScripts.smoke(p, session, p.getItemInHand());
-						}
-					}
-					
-					if(p.getInventory().getHelmet() != null){
-						if(p.getInventory().getHelmet().hasItemMeta()){
-							if(p.getInventory().getHelmet().getType() == Material.CHAINMAIL_HELMET){
-								PlayerScripts.nightvision(p);
-							}
-						}
-					}
-					
-					if(session.isMoving()){
-						session.setMoving(false);
-					}
-					
-					if(Utils.getLivingEntityHealth(p) != Utils.getLivingEntityMaxHealth(p)){
-						PlayerScripts.bleed(p, session);
-					}
-					
-					if(session.isFettedCop()){
-						p.setWalkSpeed(0);
-						p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 100, -15));
-						p.setSneaking(true);
-					}else if(session.isFetted()){
-						p.setWalkSpeed(0);
-						p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 100, -4));
-						p.setSneaking(true);
-					}
-					
-					if(session.isTazzed()){
-						if(p.hasPotionEffect(PotionEffectType.JUMP)){
-							p.getWorld().playSound(p.getLocation(), Sound.FIZZ, 0.1f, 8);
 						}else{
-							p.setWalkSpeed(0.2f);
-							p.setSneaking(false);
-							session.setTazzed(false);
+							session.setTaxTimer(session.getTaxTimer() + 1);
 						}
-					}
-					
-					if(!session.isLoggedInAsCop()){
-						if(session.isBanksClosed()){
-							session.setBanksClosedTimer(session
-									.getBanksClosedTimer() + 1);
-							if(session.getBanksClosedTimer() > 1800){
-								session.setBanksClosed(false);
-								session.setBanksClosedTimer(0);
+						
+	//					List<Entity> entitiesInSight = p.getNearbyEntities(140, 140, 140);
+	//					for(Entity entity : entitiesInSight){
+	//						if(entity instanceof Player){
+	//							Player pInSight = (Player) entity;
+	//							if(p.canSee(pInSight)){
+	//								p.showPlayer(pInSight);
+	//							}else{
+	//								p.hidePlayer(pInSight);
+	//							}
+	//						}
+	//					}
+						
+						p.setLevel(session.getDrinkLevel());
+						p.setExp(0);
+						session.setDrinkTimer(session.getDrinkTimer() + 1);
+						if(session.getDrinkTimer() > 1200){
+							session.setDrinkTimer(0);
+							session.setDrinkLevel(session.getDrinkLevel() - 1);
+							if(session.getDrinkLevel() > 20){
+								session.setDrinkLevel(20);
+							}
+							if(p.getLevel() < 20 / 3){
+								p.sendMessage(Colors.GREY + "Du hast schon lange nichts mehr getrunken...");
+							}
+							if(session.getDrinkLevel() == 0){
+								p.damage(0.5);
+							}
+						}
+		
+						p.setFoodLevel(session.getEatLevel());
+						session.setEatTimer(session.getEatTimer() + 1);
+						if(session.getEatTimer() > 1200){
+							session.setEatTimer(0);
+							session.setEatLevel(session.getEatLevel() - 1);
+							if(p.getFoodLevel() < 20 / 3){
+								p.sendMessage(Colors.GREY + "Du hast schon lange nichts mehr gegessen...");
+							}
+							if(session.getEatLevel() == 0){
+								p.damage(0.5);
 							}
 						}
 						
-						if(session.getAlcoholPromile() != 0){
-							session.setAlcoholTimer(session.getAlcoholTimer() + 1);
-							if(session.getAlcoholTimer() > 150){
-								Location loc = p.getLocation();
-								loc.setPitch(loc.getPitch() + (random.nextInt(10)-5));
-								loc.setYaw(loc.getYaw() + (random.nextInt(10)-5));
-								
-								p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 4));
-								p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 600, 4));
-								p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 600, 4));
-								p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 600, 4));
-								if(Utils.getLivingEntityHealth(p) < 19){
+						if(session.isSmoking()){
+							if(p.getItemInHand().getType() == Material.STICK && p.getItemInHand().getItemMeta().getDisplayName().equals(Colors.GREY + "Zigarrete")){
+								PlayerScripts.smoke(p, session, p.getItemInHand());
+							}
+						}
+						
+						if(p.getInventory().getHelmet() != null){
+							if(p.getInventory().getHelmet().hasItemMeta()){
+								if(p.getInventory().getHelmet().getType() == Material.CHAINMAIL_HELMET){
+									PlayerScripts.nightvision(p);
+								}
+							}
+						}
+						
+						if(session.isMoving()){
+							session.setMoving(false);
+						}
+						
+						if(Utils.getLivingEntityHealth(p) != Utils.getLivingEntityMaxHealth(p)){
+							PlayerScripts.bleed(p, session);
+						}
+						
+						if(session.isFettedCop()){
+							p.setWalkSpeed(0);
+							p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 100, -15));
+							p.setSneaking(true);
+						}else if(session.isFetted()){
+							p.setWalkSpeed(0);
+							p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 100, -4));
+							p.setSneaking(true);
+						}
+						
+						if(session.isTazzed()){
+							if(p.hasPotionEffect(PotionEffectType.JUMP)){
+								p.getWorld().playSound(p.getLocation(), Sound.FIZZ, 0.1f, 8);
+							}else{
+								p.setWalkSpeed(0.2f);
+								p.setSneaking(false);
+								session.setTazzed(false);
+							}
+						}
+						
+						if(!session.getProfession().equals("cop")){
+							if(session.isBanksClosed()){
+								session.setBanksClosedTimer(session
+										.getBanksClosedTimer() + 1);
+								if(session.getBanksClosedTimer() > 1800){
+									session.setBanksClosed(false);
+									session.setBanksClosedTimer(0);
+								}
+							}
+							
+							if(session.getAlcoholPromile() != 0){
+								session.setAlcoholTimer(session.getAlcoholTimer() + 1);
+								if(session.getAlcoholTimer() > 150){
+									Location loc = p.getLocation();
+									loc.setPitch(loc.getPitch() + (random.nextInt(10)-5));
+									loc.setYaw(loc.getYaw() + (random.nextInt(10)-5));
+									
+									p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 4));
+									p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 600, 4));
+									p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 600, 4));
+									p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 600, 4));
+									if(Utils.getLivingEntityHealth(p) < 19){
+										p.setHealth(Utils.getLivingEntityHealth(p)+1f);
+									}
+									
+									session.setAlcoholPromile(session
+											.getAlcoholPromile() - 0.075f);
+									session.setAlcoholTimer(0);
+								}
+							}
+							
+							if(session.getDrugsInBlood() != 0){
+								session.setDrugTimer(session.getDrugTimer() + 1);
+								if(session.getDrugTimer() > 90){
+									p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10));
+									p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 600, 4));
+									p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 600, 4));
+									p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 400, 3));
+									
 									p.setHealth(Utils.getLivingEntityHealth(p)+1f);
+									
+									session.setDrugsInBlood(session
+											.getDrugsInBlood() - 0.05f);
+									session.setDrugTimer(0);
 								}
-								
-								session.setAlcoholPromile(session
-										.getAlcoholPromile() - 0.075f);
-								session.setAlcoholTimer(0);
 							}
-						}
-						
-						if(session.getDrugsInBlood() != 0){
-							session.setDrugTimer(session.getDrugTimer() + 1);
-							if(session.getDrugTimer() > 90){
-								p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10));
-								p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 600, 4));
-								p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 600, 4));
-								p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 400, 3));
-								
-								p.setHealth(Utils.getLivingEntityHealth(p)+1f);
-								
-								session.setDrugsInBlood(session
-										.getDrugsInBlood() - 0.05f);
-								session.setDrugTimer(0);
-							}
-						}
-						
-						if(session.isStealingHorse()){
-							double x = p.getLocation().getX() - session.getStealHorse().getLocation().getX();
-							double y = p.getLocation().getY() - session.getStealHorse().getLocation().getY();
-							double z = p.getLocation().getZ() - session.getStealHorse().getLocation().getZ();
 							
-							if((x > -2 && x < 2) && (y > -2 && y < 2) && (z > -2 && z < 2)){
-								if(!BarAPI.hasBar(p)){
-									session.getStealHorse().setMetadata("stolen", new FixedMetadataValue(ShinigamiLife.getJavaPlugin(), true));
+							if(session.isStealingHorse()){
+								double x = p.getLocation().getX() - session.getStealHorse().getLocation().getX();
+								double y = p.getLocation().getY() - session.getStealHorse().getLocation().getY();
+								double z = p.getLocation().getZ() - session.getStealHorse().getLocation().getZ();
+								
+								if((x > -2 && x < 2) && (y > -2 && y < 2) && (z > -2 && z < 2)){
+									if(!BarAPI.hasBar(p)){
+										session.getStealHorse().setMetadata("stolen", new FixedMetadataValue(ShinigamiLife.getJavaPlugin(), true));
+										session.setStealingHorse(false);
+										p.sendMessage(Colors.GREEN + "Du hast das Pferd geknackt und kannst es nun entwenden.");
+									}
+								}else{
+									BarAPI.removeBar(p);
 									session.setStealingHorse(false);
-									p.sendMessage(Colors.GREEN + "Du hast das Pferd geknackt und kannst es nun entwenden.");
+									session.setStealHorse(null);
+									p.sendMessage(Colors.RED + "Du hast dich zu weit von dem Pferd entfernt.");
 								}
-							}else{
-								BarAPI.removeBar(p);
-								session.setStealingHorse(false);
-								session.setStealHorse(null);
-								p.sendMessage(Colors.RED + "Du hast dich zu weit von dem Pferd entfernt.");
 							}
-						}
-						
-						if(session.getProcessing() != null){
-							double x = p.getLocation().getX() - session.getProcessing().npc.getLocation().getX();
-							double y = p.getLocation().getY() - session.getProcessing().npc.getLocation().getY();
-							double z = p.getLocation().getZ() - session.getProcessing().npc.getLocation().getZ();
 							
-							if((x > -4 && x < 4) && (y > -4 && y < 4) && (z > -4 && z < 4)){
-								if(!BarAPI.hasBar(p)){
-									PlayerScripts.processingSucces(p, session);
+							if(session.getProcessing() != null){
+								double x = p.getLocation().getX() - session.getProcessing().npc.getLocation().getX();
+								double y = p.getLocation().getY() - session.getProcessing().npc.getLocation().getY();
+								double z = p.getLocation().getZ() - session.getProcessing().npc.getLocation().getZ();
+								
+								if((x > -4 && x < 4) && (y > -4 && y < 4) && (z > -4 && z < 4)){
+									if(!BarAPI.hasBar(p)){
+										PlayerScripts.processingSucces(p, session);
+									}
+								}else{
+									BarAPI.removeBar(p);
+									session.setProcessing(null);
+									p.sendMessage(Colors.RED + "Du hast dich zu weit von dem Verarbeiter entfernt.");
 								}
-							}else{
-								BarAPI.removeBar(p);
-								session.setProcessing(null);
-								p.sendMessage(Colors.RED + "Du hast dich zu weit von dem Verarbeiter entfernt.");
 							}
-						}
-						
-						if(session.isRobNpc()){
-							double x = p.getLocation().getX() - session.getInteractNpc().npcEntity.getLocation().getX();
-							double y = p.getLocation().getY() - session.getInteractNpc().npcEntity.getLocation().getY();
-							double z = p.getLocation().getZ() - session.getInteractNpc().npcEntity.getLocation().getZ();
 							
-							if((x > -5 && x < 5) && (y > -5 && y < 5) && (z > -5 && z < 5)){
-								if(BarAPI.hasBar(p)){
-									if(session.getInteractNpc().money >= session.getRobMoneySec()){
-										session.setRobTimer(session
-												.getRobTimer() + 1);
-										
-										if(session.getRobTimer() == session.getRobPoliceCallTime()){
-											ShinigamiLife.getPoliceManager().fastAlert(p, 6);
-											ShinigamiLife.getPoliceManager().wantedList.add(p);
-										}else if(session.getRobTimer() == session.getRobBanksClosedTime()){
-											session.setBanksClosed(true);
+							if(session.isRobNpc()){
+								double x = p.getLocation().getX() - session.getInteractNpc().npcEntity.getLocation().getX();
+								double y = p.getLocation().getY() - session.getInteractNpc().npcEntity.getLocation().getY();
+								double z = p.getLocation().getZ() - session.getInteractNpc().npcEntity.getLocation().getZ();
+								
+								if((x > -5 && x < 5) && (y > -5 && y < 5) && (z > -5 && z < 5)){
+									if(BarAPI.hasBar(p)){
+										if(session.getInteractNpc().money >= session.getRobMoneySec()){
+											session.setRobTimer(session
+													.getRobTimer() + 1);
+											
+											if(session.getRobTimer() == session.getRobPoliceCallTime()){
+												ShinigamiLife.getPoliceManager().fastAlert(p, 6);
+												ShinigamiLife.getPoliceManager().wantedList.add(p);
+											}else if(session.getRobTimer() == session.getRobBanksClosedTime()){
+												session.setBanksClosed(true);
+											}
+											session.getInteractNpc().money-=session.getRobMoneySec();
+											session.setMoneyInPocket(session
+													.getMoneyInPocket()
+													+ session.getRobMoneySec());
+										}else{
+											BarAPI.removeBar(p);
+											session.setRobTimer(0);
+											session.setRobNpc(false);
+											p.sendMessage(Colors.GREEN + "Der Raub ist erfolgreich.");
 										}
-										session.getInteractNpc().money-=session.getRobMoneySec();
-										session.setMoneyInPocket(session
-												.getMoneyInPocket()
-												+ session.getRobMoneySec());
-									}else{
-										BarAPI.removeBar(p);
-										session.setRobTimer(0);
-										session.setRobNpc(false);
-										p.sendMessage(Colors.GREEN + "Der Raub ist erfolgreich.");
+									}
+								}else{
+									BarAPI.removeBar(p);
+									session.setRobTimer(0);
+									session.setRobNpc(false);
+									p.sendMessage(Colors.RED + "Der Raub ist abgebrochen.");
+									p.sendMessage(Colors.RED + "Du hast dich zu weit von dem NPC entfernt.");
+								}
+								
+								if(p.getWalkSpeed() == 0){
+									BarAPI.removeBar(p);
+									session.setRobTimer(0);
+									session.setRobNpc(false);
+									p.sendMessage(Colors.RED + "Der Raub ist abgebrochen.");
+								}
+							}
+						}else{
+							if(session.getEscort() != null){
+								Location loc = p.getLocation();
+								
+								if(p.isInsideVehicle()){
+									Vehicle v = (Vehicle) p.getVehicle();
+									if(v.getType() == EntityType.HORSE){
+										loc.setY(loc.getY()-1);
 									}
 								}
-							}else{
-								BarAPI.removeBar(p);
-								session.setRobTimer(0);
-								session.setRobNpc(false);
-								p.sendMessage(Colors.RED + "Der Raub ist abgebrochen.");
-								p.sendMessage(Colors.RED + "Du hast dich zu weit von dem NPC entfernt.");
-							}
-							
-							if(p.getWalkSpeed() == 0){
-								BarAPI.removeBar(p);
-								session.setRobTimer(0);
-								session.setRobNpc(false);
-								p.sendMessage(Colors.RED + "Der Raub ist abgebrochen.");
-							}
-						}
-					}else{
-						if(session.getEscort() != null){
-							Location loc = p.getLocation();
-							
-							if(p.isInsideVehicle()){
-								Vehicle v = (Vehicle) p.getVehicle();
-								if(v.getType() == EntityType.HORSE){
-									loc.setY(loc.getY()-1);
-								}
-							}
-							
-							session.getEscort().teleport(loc);
-						}else if(session.isSearchHorse()){
-							double x = p.getLocation().getX() - session.getSearchedHorse().getLocation().getX();
-							double y = p.getLocation().getY() - session.getSearchedHorse().getLocation().getY();
-							double z = p.getLocation().getZ() - session.getSearchedHorse().getLocation().getZ();
-							
-							if((x > -2 && x < 2) && (y > -2 && y < 2) && (z > -2 && z < 2)){
-								if(!BarAPI.hasBar(p)){
-									ShinigamiLife.getMenuManager().open(p, session, "searchhorsemenu");
+								
+								session.getEscort().teleport(loc);
+							}else if(session.isSearchHorse()){
+								double x = p.getLocation().getX() - session.getSearchedHorse().getLocation().getX();
+								double y = p.getLocation().getY() - session.getSearchedHorse().getLocation().getY();
+								double z = p.getLocation().getZ() - session.getSearchedHorse().getLocation().getZ();
+								
+								if((x > -2 && x < 2) && (y > -2 && y < 2) && (z > -2 && z < 2)){
+									if(!BarAPI.hasBar(p)){
+										ShinigamiLife.getMenuManager().open(p, session, "searchhorsemenu");
+										session.setSearchHorse(false);
+									}
+								}else{
+									BarAPI.removeBar(p);
 									session.setSearchHorse(false);
+									p.sendMessage(Colors.RED + "Du hast dich zu weit von dem Pferd entfernt.");
 								}
-							}else{
-								BarAPI.removeBar(p);
-								session.setSearchHorse(false);
-								p.sendMessage(Colors.RED + "Du hast dich zu weit von dem Pferd entfernt.");
-							}
-						}else if(session.isSearchPlayer()){
-							double x = p.getLocation().getX() - session.getSearchedPlayer().getLocation().getX();
-							double y = p.getLocation().getY() - session.getSearchedPlayer().getLocation().getY();
-							double z = p.getLocation().getZ() - session.getSearchedPlayer().getLocation().getZ();
-							
-							if((x > -2 && x < 2) && (y > -2 && y < 2) && (z > -2 && z < 2)){
-								if(!BarAPI.hasBar(p)){
-									ShinigamiLife.getMenuManager().open(p, session, "searchpersonmenu");
+							}else if(session.isSearchPlayer()){
+								double x = p.getLocation().getX() - session.getSearchedPlayer().getLocation().getX();
+								double y = p.getLocation().getY() - session.getSearchedPlayer().getLocation().getY();
+								double z = p.getLocation().getZ() - session.getSearchedPlayer().getLocation().getZ();
+								
+								if((x > -2 && x < 2) && (y > -2 && y < 2) && (z > -2 && z < 2)){
+									if(!BarAPI.hasBar(p)){
+										ShinigamiLife.getMenuManager().open(p, session, "searchpersonmenu");
+										session.setSearchPlayer(false);
+									}
+								}else{
+									BarAPI.removeBar(p);
 									session.setSearchPlayer(false);
+									p.sendMessage(Colors.RED + "Du hast dich zu weit von der Person entfernt.");
 								}
-							}else{
-								BarAPI.removeBar(p);
-								session.setSearchPlayer(false);
-								p.sendMessage(Colors.RED + "Du hast dich zu weit von der Person entfernt.");
-							}
-						}else if(session.isSearchChest()){
-							double x = p.getLocation().getX() - session.getSearchedChest().getLocation().getX();
-							double y = p.getLocation().getY() - session.getSearchedChest().getLocation().getY();
-							double z = p.getLocation().getZ() - session.getSearchedChest().getLocation().getZ();
-							
-							if((x > -2 && x < 2) && (y > -2 && y < 2) && (z > -2 && z < 2)){
-								if(!BarAPI.hasBar(p)){
-									ShinigamiLife.getMenuManager().open(p, session, "searchchestmenu");
+							}else if(session.isSearchChest()){
+								double x = p.getLocation().getX() - session.getSearchedChest().getLocation().getX();
+								double y = p.getLocation().getY() - session.getSearchedChest().getLocation().getY();
+								double z = p.getLocation().getZ() - session.getSearchedChest().getLocation().getZ();
+								
+								if((x > -2 && x < 2) && (y > -2 && y < 2) && (z > -2 && z < 2)){
+									if(!BarAPI.hasBar(p)){
+										ShinigamiLife.getMenuManager().open(p, session, "searchchestmenu");
+										session.setSearchChest(false);
+									}
+								}else{
+									BarAPI.removeBar(p);
 									session.setSearchChest(false);
+									p.sendMessage(Colors.RED + "Du hast dich zu weit von der Kiste entfernt.");
 								}
-							}else{
-								BarAPI.removeBar(p);
-								session.setSearchChest(false);
-								p.sendMessage(Colors.RED + "Du hast dich zu weit von der Kiste entfernt.");
-							}
-						}else if(session.isSearchBoat()){
-							double x = p.getLocation().getX() - session.getSearchedBoat().getLocation().getX();
-							double y = p.getLocation().getY() - session.getSearchedBoat().getLocation().getY();
-							double z = p.getLocation().getZ() - session.getSearchedBoat().getLocation().getZ();
-							
-							if((x > -2 && x < 2) && (y > -2 && y < 2) && (z > -2 && z < 2)){
-								if(!BarAPI.hasBar(p)){
-									ShinigamiLife.getMenuManager().open(p, session, "searchboatmenu");
+							}else if(session.isSearchBoat()){
+								double x = p.getLocation().getX() - session.getSearchedBoat().getLocation().getX();
+								double y = p.getLocation().getY() - session.getSearchedBoat().getLocation().getY();
+								double z = p.getLocation().getZ() - session.getSearchedBoat().getLocation().getZ();
+								
+								if((x > -2 && x < 2) && (y > -2 && y < 2) && (z > -2 && z < 2)){
+									if(!BarAPI.hasBar(p)){
+										ShinigamiLife.getMenuManager().open(p, session, "searchboatmenu");
+										session.setSearchBoat(false);
+									}
+								}else{
+									BarAPI.removeBar(p);
 									session.setSearchBoat(false);
+									p.sendMessage(Colors.RED + "Du hast dich zu weit von dem Boot entfernt.");
 								}
-							}else{
-								BarAPI.removeBar(p);
-								session.setSearchBoat(false);
-								p.sendMessage(Colors.RED + "Du hast dich zu weit von dem Boot entfernt.");
 							}
 						}
 					}

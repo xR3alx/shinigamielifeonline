@@ -31,7 +31,7 @@ public class PoliceManager {
 
 	public void logInAsCop(Player p, Session session){
 		loggedInAsCop.add(p);
-		session.setLoggedInAsCop(true);
+//		session.setLoggedInAsCop(true);
 		
 		Inventory inv = Bukkit.createInventory(p, InventoryType.PLAYER);
 		inv.setContents(p.getInventory().getContents());
@@ -44,7 +44,7 @@ public class PoliceManager {
 	
 	public void logOutAsCop(Player p, Session session){
 		loggedInAsCop.remove(p);
-		session.setLoggedInAsCop(false);
+//		session.setLoggedInAsCop(false);
 		
 		p.getInventory().setContents(session.getPlayerInv().getContents());
 		p.updateInventory();

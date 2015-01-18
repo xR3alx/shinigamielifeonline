@@ -32,13 +32,11 @@ public class InventoryListener implements Listener{
 		}
 		
 		if(!session.getOpenMenu().equals("")){
-			if(event.getInventory().getType() == InventoryType.CHEST){
-				if(i != null && i.getType() != Material.AIR){
-					if(i.hasItemMeta()){
-						if(i.getItemMeta().getDisplayName().contains(Colors.BLACK + "  [I]")){
-							ShinigamiLife.getMenuManager().checkEvent(p, inv, i, event, session);
-							p.updateInventory();
-						}
+			if(i != null && i.getType() != Material.AIR){
+				if(i.hasItemMeta()){
+					if(i.getItemMeta().getDisplayName().contains(Colors.BLACK + "  .")){
+						ShinigamiLife.getMenuManager().checkEvent(p, inv, i, event, session);
+						p.updateInventory();
 					}
 				}
 			}
@@ -73,7 +71,7 @@ public class InventoryListener implements Listener{
 				session.setSpawned(true);
 			}else if(event.getInventory().getTitle().equals("Seite")){
 				session.setJoined(true);
-				session.setSide("civ");
+//				session.setSide("civ");
 			}
 			
 			session.setOpenMenu("");

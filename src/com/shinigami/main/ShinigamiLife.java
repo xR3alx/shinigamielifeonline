@@ -27,8 +27,8 @@ import com.shinigami.listener.PlayerListener;
 import com.shinigami.listener.UtilsListener;
 import com.shinigami.listener.VehicleListener;
 import com.shinigami.locations.LocationsManager;
-import com.shinigami.menus.MenuManager;
 import com.shinigami.npcs.NPCManager;
+import com.shinigami.menus.MenuManager;
 import com.shinigami.police.PoliceManager;
 import com.shinigami.police.TicketManager;
 import com.shinigami.regions.RegionsManager;
@@ -62,7 +62,7 @@ public class ShinigamiLife {
 	
 	private static boolean loaded;
 	
-	public static final String LOGTAG = "[MINECRAFTLIFE]  -  ";
+	public static final String LOGTAG = "[SHINIGAMILIFEONLINE]  -  ";
 	
 	public ShinigamiLife(JavaPlugin arg) {
 		javaPlugin = arg;

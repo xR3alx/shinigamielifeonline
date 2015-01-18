@@ -98,7 +98,7 @@ public class PlayerListener implements Listener {
 			p.removePotionEffect(pEffect.getType());
 		}
 		
-		ShinigamiLife.getPoliceManager().logOutAsCop(p, session);
+//		ShinigamiLife.getPoliceManager().logOutAsCop(p, session);
 		session.setJoinTimer(0);
 		session.setJoined(false);
 		session.setSpawned(false);
@@ -133,7 +133,7 @@ public class PlayerListener implements Listener {
 							// ---- NPC / HAENDLER AUSRAUBEN ----
 							if(p.isSneaking()){
 								if(!session.isInteract()){
-									if(!session.isLoggedInAsCop()){
+									if(!session.getProfession().equals("cop")){
 										if(session.getInteractTimer() > 10){
 											session.setInteractTimer(0);
 											session.setInteractNpc(ShinigamiLife.getNpcManager().getByNameAndLoc(lE.getCustomName(), lE.getLocation()));
@@ -297,7 +297,7 @@ public class PlayerListener implements Listener {
 			return;
 		// ---- ESKORTIEREN BEENDEN ----
 		}else if(e.getType() == EntityType.PLAYER){
-			if(session.isLoggedInAsCop()){
+			if(session.getProfession().equals("cop")){
 				if(session.isEscortPlayer()){
 					ShinigamiLife.getMenuManager().open(p, session, "");
 				}
@@ -309,7 +309,7 @@ public class PlayerListener implements Listener {
 				Player t = (Player) e;
 				// ---- SPIELER DURCHSUCHEN ----
 				if(itemInHand.getType() == Material.BOOK && itemInHand.getItemMeta().getDisplayName().equals(Colors.TURKISH + "Polizeimenü")){
-					if(session.isLoggedInAsCop()){
+					if(session.getProfession().equals("cop")){
 						if(p.isSneaking()){
 							if(!BarAPI.hasBar(p)){
 								BarAPI.setMessage(p, "durchsuche Person....", 5);
@@ -323,7 +323,7 @@ public class PlayerListener implements Listener {
 					}
 				// ---- SPIELER FESSELN ----
 				}else if(itemInHand.getType() == Material.LEASH && itemInHand.getItemMeta().getDisplayName().equals(Colors.DARK_RED + "Fessel")){
-					if(!session.isLoggedInAsCop()){
+					if(!session.getProfession().equals("cop")){
 						PlayerScripts.fetterPlayer(p, t);
 					}
 				// ---- SPIELER MIT SCHERE BEFREIEN ----
@@ -539,7 +539,7 @@ public class PlayerListener implements Listener {
 						if(house != null){
 							if(house.area.intersectsRegion(p.getLocation())){
 								
-							}else if(session.isLoggedInAsCop()){
+							}else if(session.getProfession().equals("cop")){
 								if(!BarAPI.hasBar(p)){
 									Chest c = (Chest) b.getState();
 									session.setSearchedChest(c);
@@ -643,9 +643,9 @@ public class PlayerListener implements Listener {
 		p.getActivePotionEffects().clear();
 		
 		p.sendMessage(Colors.GREY + "Das war verdammt knapp.. Zum Glück stehst du wieder auf deinen Beinen");
-		session.setMoneyPocket(0);
+		session.setMoneyInPocket(0);
 		
-		if(!session.isLoggedInAsCop()){
+		if(!session.getProfession().equals("cop")){
 			ItemStack itemStack = new ItemStack(Material.BOOK);
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			itemMeta.setDisplayName(Colors.YELLOW + "Spielermenü");
@@ -692,11 +692,13 @@ public class PlayerListener implements Listener {
 		Player p = (Player) event.getPlayer();
 		Session session = ShinigamiLife.getSessionManager().getSession(p.getUniqueId() + "");
 		
-		if(event.getFrom().distance(event.getTo()) > 10){
-			event.setCancelled(true);
+		if(session.isJoined()){
+			if(event.getFrom().distance(event.getTo()) > 6){
+				event.setCancelled(true);
+			}
+			
+			session.setMoving(true);
 		}
-		
-		session.setMoving(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -710,6 +712,9 @@ public class PlayerListener implements Listener {
 					event.setCancelled(true);
 					event.getItemDrop().remove();
 				}else if(iStack.getItemMeta().getDisplayName().equals(Colors.TURKISH + "Polizeimenü")){
+					event.setCancelled(true);
+					event.getItemDrop().remove();
+				}else if(iStack.getItemMeta().getDisplayName().equals(Colors.BLACK + "  .")){
 					event.setCancelled(true);
 					event.getItemDrop().remove();
 				}

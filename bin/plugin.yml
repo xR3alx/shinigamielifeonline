@@ -1,0 +1,23 @@
+name: ShinigamiLife
+version: 1.0
+description: Altis Life for Minecraft
+depend: [BarAPI]
+
+main: com.shinigami.main.Main
+
+commands:
+  mclife:
+    usage: /<command>
+    description:
+  load:
+    usage: /<command>
+    description:
+  unload:
+    usage: /<command>
+    description:
+  adminmsg:
+    usage: /<command>
+    description:
+  regchar:
+    usage: /<regchar>
+    description:

@@ -4,10 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class Utils {
 
@@ -64,6 +68,20 @@ public class Utils {
 				.replace("9", "");
 	}
 	
+	public static ItemMeta changeItemMeta(ItemStack item, String displayname, String[] lore){
+		ItemMeta itemMeta = item.getItemMeta();
+		itemMeta.setDisplayName(displayname);
+		List<String> loreList = new ArrayList<String>();
+		if(lore.length != 0){
+			for(String s : lore){
+				loreList.add(s);
+			}
+		}
+		itemMeta.setLore(loreList);
+		
+		return itemMeta;
+	}
+	
 	public static String changeLicences(String s){
 		return s.replace("ridinglicence", "Reitlizenz")
 				.replace("boatlicence", "Bootslizenz")
@@ -83,39 +101,11 @@ public class Utils {
 	}
 	
 	public static double getLivingEntityHealth(LivingEntity p){
-		double health = 0;
-		try {
-			health = (double)p.getClass().getMethod("getHealth", double.class).invoke(p);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		}
-		return health;
+		return ((Damageable) p).getHealth();
 	}
 	
 	public static double getLivingEntityMaxHealth(LivingEntity p){
-		double health = 0;
-		try {
-			health = (double)p.getClass().getMethod("getMaxHealth", double.class).invoke(p);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		}
-		return health;
+		return ((Damageable) p).getMaxHealth();
 	}
 	
 	public static String changeTruFalse(String s){

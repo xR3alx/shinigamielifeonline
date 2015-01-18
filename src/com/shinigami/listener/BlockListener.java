@@ -30,7 +30,7 @@ public class BlockListener implements Listener{
 		
 		if(session != null){
 			if(b.getType() == Material.WEB){
-				if(session.getSide().equals("cop")){
+				if(!session.getProfession().equals("cop")){
 					ShinigamiLife.getBlockRespawner().addBlock(b.getWorld(), b.getLocation(), Material.AIR, 300, (short) 0);
 				}else{
 					if(i.getAmount() == 1){

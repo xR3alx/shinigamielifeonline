@@ -19,11 +19,20 @@ import com.shinigami.sessions.SessionManager.Garage;
 import com.shinigami.sessions.SessionManager.Processing;
 
 public class Session {
-	private String playerName, channel, uuid, openMenu;
-	private int moneyBank, moneyInPocket, moneyBankC, moneyInPocketC;
+	
+	// account choice session
+	private String acc1CharName, acc2CharName, acc3CharName,
+					acc1Profession, acc2Profession, acc3Profession;
+	private int acc1Money, acc2Money, acc3Money,
+				accCount;
+	
+	// actual session
+	
+	private String playerName, channel, uuid, openMenu, profession, charname;
+	private int moneyBank, moneyInPocket, accNumLoggedIn;
 	private float stamina;
-	private HashMap<String, Boolean> licences, licencesC;
-	private Garage garageLand, garageWater, garageLandC, garageWaterC;
+	private HashMap<String, Boolean> licences;
+	private Garage garageLand, garageWater;
 	private Group group;
 	
 	private HashMap<String, Boolean> shootables;
@@ -31,8 +40,8 @@ public class Session {
 	private float alcoholPromile, drugsInBlood;
 	private int taxTimer, bleedTimer, smokeTimer, smokedTimes, joinTimer, interactTimer, drinkTimer, eatTimer, alcoholTimer, drugTimer, banksClosedTimer, robTimer;
 	private int eatLevel, drinkLevel, moneyPayAmount, robNpcAmount, robMoneySec, robPoliceCallTime, robBanksClosedTime, invSize, invSizeC;
-	private boolean smoking, hasTicket, isJoined, stealingHorse, stealingBoat, escorted, interact, tazzed, zoomed, robNpc, banksClosed, isSpawned, isLoggedInAsCop, isFetted, isFettedCop, moving;
-	private String side, alertMsg, alertWeapons;
+	private boolean smoking, hasTicket, isJoined, stealingHorse, stealingBoat, escorted, interact, tazzed, zoomed, robNpc, banksClosed, isSpawned, isFetted, isFettedCop, moving, charChoiceShowed;
+	private String alertMsg, alertWeapons;
 	private Player alertPlayer;
 	private NPC interactNpc, clickedNpc;
 	private Horse stealHorse;
@@ -62,68 +71,118 @@ public class Session {
 	
 	
 	
-	public Garage getGarageLand(){
-		if(isLoggedInAsCop()){
-			return getGarageLandC();
-		}else{
-			return garageLand;
-		}
+	
+	
+	
+	
+	
+	public String getCharname() {
+		return charname;
 	}
 	
-	public Garage getGarageWater(){
-		if(isLoggedInAsCop()){
-			return getGarageWaterC();
-		}else{
-			return garageWater;
-		}
+	public void setCharname(String charname) {
+		this.charname = charname;
 	}
 	
-	public boolean getLicence(String s){
-		if(isLoggedInAsCop()){
-			return licencesC.get(s);
-		}else{
-			return licences.get(s);
-		}
+	public void setCharChoiceShowed(boolean charChoiceShowed) {
+		this.charChoiceShowed = charChoiceShowed;
 	}
 	
-	public void setLicence(String s, boolean bool){
-		if(isLoggedInAsCop()){
-			licencesC.put(s, bool);
-		}else{
-			licences.put(s, bool);
-		}
+	public boolean isCharChoiceShowed(){
+		return charChoiceShowed;
 	}
 	
-	public void setMoneyPocket(int amount){
-		if(isLoggedInAsCop()){
-			moneyInPocketC=amount;
-		}else{
-			moneyInPocket=amount;
-		}
+	
+	public String getAcc1CharName() {
+		return acc1CharName;
 	}
 	
-	public int getMoneyPocket(){
-		if(isLoggedInAsCop()){
-			return moneyInPocketC;
-		}else{
-			return moneyInPocket;
-		}
+	public int getAcc1Money() {
+		return acc1Money;
 	}
 	
-	public void setMoneyInBank(int amount){
-		if(isLoggedInAsCop()){
-			moneyBankC=amount;
-		}else{
-			moneyBank=amount;
-		}
+	public String getAcc1Profession() {
+		return acc1Profession;
 	}
 	
-	public int getMoneyInBank(){
-		if(isLoggedInAsCop()){
-			return moneyBankC;
-		}else{
-			return moneyBank;
-		}
+	public String getAcc2CharName() {
+		return acc2CharName;
+	}
+	
+	public int getAcc2Money() {
+		return acc2Money;
+	}
+	
+	public String getAcc2Profession() {
+		return acc2Profession;
+	}
+	
+	public String getAcc3CharName() {
+		return acc3CharName;
+	}
+	
+	public int getAcc3Money() {
+		return acc3Money;
+	}
+	
+	public String getAcc3Profession() {
+		return acc3Profession;
+	}
+	
+	public void setAcc1CharName(String acc1CharName) {
+		this.acc1CharName = acc1CharName;
+	}
+	
+	public void setAcc1Money(int acc1Money) {
+		this.acc1Money = acc1Money;
+	}
+	
+	public void setAcc1Profession(String acc1Profession) {
+		this.acc1Profession = acc1Profession;
+	}
+	
+	public void setAcc2CharName(String acc2CharName) {
+		this.acc2CharName = acc2CharName;
+	}
+	
+	public void setAcc2Money(int acc2Money) {
+		this.acc2Money = acc2Money;
+	}
+	
+	public void setAcc2Profession(String acc2Profession) {
+		this.acc2Profession = acc2Profession;
+	}
+	
+	public void setAcc3CharName(String acc3CharName) {
+		this.acc3CharName = acc3CharName;
+	}
+	
+	public void setAcc3Money(int acc3Money) {
+		this.acc3Money = acc3Money;
+	}
+	
+	public void setAcc3Profession(String acc3Profession) {
+		this.acc3Profession = acc3Profession;
+	}
+	
+	public int getAccCount() {
+		return accCount;
+	}
+	
+	public void setAccCount(int accCount) {
+		this.accCount = accCount;
+	}
+	
+	
+	
+	
+	
+	public String getProfession() {
+		return profession;
+	}
+	
+	public void setProfession(String profession) {
+		this.profession = profession;
 	}
 	
 	public boolean isFetted() {
@@ -142,36 +201,12 @@ public class Session {
 		this.isFettedCop = isFettedCop;
 	}
 
-	public boolean isLoggedInAsCop() {
-		return isLoggedInAsCop;
-	}
-
-	public void setLoggedInAsCop(boolean isLoggedInAsCop) {
-		this.isLoggedInAsCop = isLoggedInAsCop;
-	}
-	
 	public String getUuid() {
 		return uuid;
 	}
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
-	}
-
-	public int getMoneyBankC() {
-		return moneyBankC;
-	}
-
-	public void setMoneyBankC(int moneyBankC) {
-		this.moneyBankC = moneyBankC;
-	}
-
-	public int getMoneyInPocketC() {
-		return moneyInPocketC;
-	}
-
-	public void setMoneyInPocketC(int moneyInPocketC) {
-		this.moneyInPocketC = moneyInPocketC;
 	}
 
 	public int getInvSizeC() {
@@ -510,14 +545,6 @@ public class Session {
 		this.isSpawned = isSpawned;
 	}
 
-	public String getSide() {
-		return side;
-	}
-
-	public void setSide(String side) {
-		this.side = side;
-	}
-
 	public String getAlertMsg() {
 		return alertMsg;
 	}
@@ -766,14 +793,6 @@ public class Session {
 		this.boats = boats;
 	}
 
-	public HashMap<String, Boolean> getLicencesC() {
-		return licencesC;
-	}
-
-	public void setLicencesC(HashMap<String, Boolean> licencesC) {
-		this.licencesC = licencesC;
-	}
-
 	public String getOpenMenu() {
 		return openMenu;
 	}
@@ -802,24 +821,23 @@ public class Session {
 		this.garageLand = garageLand;
 	}
 
+	public Garage getGarageLand() {
+		return garageLand;
+	}
+	
 	public void setGarageWater(Garage garageWater) {
 		this.garageWater = garageWater;
 	}
 
-	public void setGarageLandC(Garage garageLandC) {
-		this.garageLandC = garageLandC;
+	public Garage getGarageWater() {
+		return garageWater;
+	}
+	
+	public int getAccNumLoggedIn() {
+		return accNumLoggedIn;
 	}
 
-	public void setGarageWaterC(Garage garageWaterC) {
-		this.garageWaterC = garageWaterC;
+	public void setAccNumLoggedIn(int accNumLoggedIn) {
+		this.accNumLoggedIn = accNumLoggedIn;
 	}
-
-	public Garage getGarageLandC() {
-		return garageLandC;
-	}
-
-	public Garage getGarageWaterC() {
-		return garageWaterC;
-	}
-
 }
