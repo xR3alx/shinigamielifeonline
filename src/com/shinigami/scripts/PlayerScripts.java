@@ -1,6 +1,5 @@
 package com.shinigami.scripts;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 

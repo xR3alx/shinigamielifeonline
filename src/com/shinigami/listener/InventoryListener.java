@@ -43,8 +43,10 @@ public class InventoryListener implements Listener{
 		}
 		
 		if(i != null){
-			if(i.getType() == Material.getMaterial(52)){
-				event.getView().setCursor(null);
+			if(i.getType() == Material.STAINED_GLASS_PANE){
+				if(event.getCursor().getType() == Material.STAINED_GLASS_PANE){
+					event.setCursor(null);
+				}
 				event.setCancelled(true);
 			}else if(i.getType() == Material.SADDLE){
 				event.getView().setCursor(null);

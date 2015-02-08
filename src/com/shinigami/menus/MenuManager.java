@@ -3,15 +3,12 @@ package com.shinigami.menus;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.shinigami.sessions.Session;
-import com.shinigami.sessions.SessionManager.Licence;
-import com.shinigami.utils.Colors;
 import com.shinigami.utils.DebugMessages;
 import com.shinigami.utils.SellInventory;
 
@@ -21,26 +18,30 @@ public class MenuManager {
 	private ArrayList<SellInventory> sellInventories;
 	
 	public MenuManager(){
+		sellInventories = new ArrayList<SellInventory>();
 		menus = new HashMap<String, Menu>();
 		
 		boolean loaded = false;
 		while(!loaded){
-			menus.put("account", new AccountMenu());
+			menus.put("menu_account", new MenuAccount());
+			
+			menus.put("shop_clothing_tab1", new ShopClothing(1));
+			menus.put("shop_clothing_tab2", new ShopClothing(2));
 			
 			loaded = true;
 		}
 	}
 	
 	@SuppressWarnings("null")
-	public void checkMenu(Player p, Session session, Entity npc){
-		String menuName = npc.getMetadata("menu").get(0).asString();
-			
-		if(menuName != null || !menuName.equals("")){
-			Menu menu = menus.get(menuName);
-			session.setOpenMenu(menuName);
-			menu.open(p, session);
-			
-			DebugMessages.openMenu(session);
+	public void checkMenu(Player p, Session session, String string){
+		if(!string.equals("")){
+			if(menus.containsKey(string)){
+				Menu menu = menus.get(string);
+				session.setOpenMenu(string);
+				menu.open(p, session);
+				
+				DebugMessages.openMenu(session);
+			}
 		}
 	}
 	

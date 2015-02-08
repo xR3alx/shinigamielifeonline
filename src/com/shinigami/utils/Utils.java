@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.bukkit.Color;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public class Utils {
 
@@ -68,18 +70,37 @@ public class Utils {
 				.replace("9", "");
 	}
 	
-	public static ItemMeta changeItemMeta(ItemStack item, String displayname, String[] lore){
+	public static void changeItemMeta(ItemStack item, String displayname, String[] lore){
 		ItemMeta itemMeta = item.getItemMeta();
 		itemMeta.setDisplayName(displayname);
-		List<String> loreList = new ArrayList<String>();
-		if(lore.length != 0){
-			for(String s : lore){
-				loreList.add(s);
+		if(lore != null){
+			List<String> loreList = new ArrayList<String>();
+			if(lore.length != 0){
+				for(String s : lore){
+					loreList.add(s);
+				}
 			}
+			itemMeta.setLore(loreList);
 		}
-		itemMeta.setLore(loreList);
 		
-		return itemMeta;
+		item.setItemMeta(itemMeta);
+	}
+	
+	public static void changeItemMeta(ItemStack item, String displayname, String[] lore, Color color){
+		LeatherArmorMeta itemMeta = (LeatherArmorMeta) item.getItemMeta();
+		itemMeta.setDisplayName(displayname);
+		itemMeta.setColor(color);
+		if(lore != null){
+			List<String> loreList = new ArrayList<String>();
+			if(lore.length != 0){
+				for(String s : lore){
+					loreList.add(s);
+				}
+			}
+			itemMeta.setLore(loreList);
+		}
+		
+		item.setItemMeta(itemMeta);
 	}
 	
 	public static String changeLicences(String s){

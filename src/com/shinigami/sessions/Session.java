@@ -39,7 +39,7 @@ public class Session {
 	private HashMap<String, Float> shootTimers, shootTimersMax;
 	private float alcoholPromile, drugsInBlood;
 	private int taxTimer, bleedTimer, smokeTimer, smokedTimes, joinTimer, interactTimer, drinkTimer, eatTimer, alcoholTimer, drugTimer, banksClosedTimer, robTimer;
-	private int eatLevel, drinkLevel, moneyPayAmount, robNpcAmount, robMoneySec, robPoliceCallTime, robBanksClosedTime, invSize, invSizeC;
+	private int eatLevel, drinkLevel, moneyPayAmount, robNpcAmount, robMoneySec, robPoliceCallTime, robBanksClosedTime, invSize;
 	private boolean smoking, hasTicket, isJoined, stealingHorse, stealingBoat, escorted, interact, tazzed, zoomed, robNpc, banksClosed, isSpawned, isFetted, isFettedCop, moving, charChoiceShowed;
 	private String alertMsg, alertWeapons;
 	private Player alertPlayer;
@@ -207,14 +207,6 @@ public class Session {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
-	}
-
-	public int getInvSizeC() {
-		return invSizeC;
-	}
-
-	public void setInvSizeC(int invSizeC) {
-		this.invSizeC = invSizeC;
 	}
 
 	public String getPlayerName() {

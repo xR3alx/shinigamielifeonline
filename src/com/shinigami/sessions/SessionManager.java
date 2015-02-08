@@ -12,6 +12,7 @@ import java.util.Random;
 import me.confuser.barapi.BarAPI;
 
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -247,7 +248,7 @@ public class SessionManager {
 	public void changeInv(Session session, Player p){
 		int invSize = 0;
 		invSize = session.getInvSize();
-		ItemStack restricted = new ItemStack(52);
+		ItemStack restricted = new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.GRAY.getData());
 		ItemMeta meta = restricted.getItemMeta();
 		meta.setDisplayName(Colors.RED + "[Gesperrt]");
 		restricted.setItemMeta(meta);
@@ -345,7 +346,7 @@ public class SessionManager {
 				
 				if(p != null){
 					if(!session.isCharChoiceShowed()){
-						ShinigamiLife.getMenuManager().open(p, session, "account");
+						ShinigamiLife.getMenuManager().open(p, session, "menu_account");
 						session.setCharChoiceShowed(true);
 					}
 					

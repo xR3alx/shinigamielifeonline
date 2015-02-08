@@ -165,8 +165,9 @@ public class PlayerListener implements Listener {
 										}
 									}
 								}
+							}else{
+								ShinigamiLife.getMenuManager().checkMenu(p, session, lE.getMetadata("menu").get(0).asString());
 							}
-							ShinigamiLife.getMenuManager().checkMenu(p, session, lE);
 						}
 					}
 					return;
@@ -417,10 +418,10 @@ public class PlayerListener implements Listener {
 								PlayerScripts.breakFetter(p, session);
 							}else if(itemInHand.getType() == Material.BOOK && itemInHand.getItemMeta().getDisplayName().equals(Colors.TURKISH + "Polizeimenü")){
 								event.setCancelled(true);
-								ShinigamiLife.getMenuManager().open(p, session, "policemenu");
+//								ShinigamiLife.getMenuManager().open(p, session, "policemenu");
 							}else if(itemInHand.getType() == Material.BOOK && itemInHand.getItemMeta().getDisplayName().equals(Colors.YELLOW + "Spielermenü")){
 								event.setCancelled(true);
-								ShinigamiLife.getMenuManager().open(p, session, "playermenu");
+//								ShinigamiLife.getMenuManager().open(p, session, "playermenu");
 							}else if(itemInHand.getType() == Material.STICK && itemInHand.getItemMeta().getDisplayName().equals(Colors.GREY + "Zigarrete")){
 								event.setCancelled(true);
 								session.setSmoking(true);
@@ -510,7 +511,7 @@ public class PlayerListener implements Listener {
 				if(b != null){
 					if(b.getType() == Material.SIGN_POST || b.getType() == Material.WALL_SIGN){
 						Sign s = (Sign) b.getState();
-						if(s.getLine(0).equals("[Hauskauf]")){
+						if(s.getLine(0).equals("[Buy house]")){
 							if(!s.getLine(1).equals("")){
 								if(!s.getLine(2).equals("")){
 									if(s.getLine(3).equals("")){
@@ -518,9 +519,14 @@ public class PlayerListener implements Listener {
 									}else if(s.getLine(3).equals(p.getName())){
 										ShinigamiLife.getMenuManager().open(p, session, "houseshop");
 									}else{
-										p.sendMessage(Colors.RED + "Diese Haus gehört bereits jemandem!");
+										p.sendMessage(Colors.RED + "This house is already owned by someone other!");
 									}
 								}
+							}
+						}else if(s.getLine(0).equals("[Menu]")){
+							if(!s.getLine(2).equals("")){
+								String menuString = s.getLine(2) + s.getLine(3);
+								ShinigamiLife.getMenuManager().checkMenu(p, session, menuString);
 							}
 						}
 			 		}else if(b.getType() == Material.CHEST){
@@ -552,34 +558,35 @@ public class PlayerListener implements Listener {
 						}else{
 							event.setCancelled(true);
 						}
-			 		}else if(b.getType() == Material.WOODEN_DOOR || b.getType() == Material.IRON_DOOR_BLOCK){
-			 			if(itemInHand.hasItemMeta()){
-			 				if(itemInHand.getType() == Material.NETHER_BRICK_ITEM && itemInHand.getItemMeta().getDisplayName().equals(Colors.WHITE + "Schlüssel")){
-			 					if(b.getMetadata("keycode").size() != 0){
-			 						if(itemInHand.getItemMeta().getLore() != null){
-				 						String keycodeString = b.getMetadata("keycode").get(0).asString();
-				 						String keycodeItemString = itemInHand.getItemMeta().getLore().get(0);
-				 						
-				 						if(Integer.parseInt(keycodeItemString) != Integer.parseInt(keycodeString)){
-				 							event.setCancelled(true);
-				 						}
-			 						}
-			 					}else{
-			 						if(itemInHand.getItemMeta().getLore() == null){
-				 						int keycode = random.nextInt(999999);
-				 						b.setMetadata("keycode", new FixedMetadataValue(ShinigamiLife.getJavaPlugin(), keycode));
-				 						
-				 						ItemMeta itemMeta = itemInHand.getItemMeta();
-				 						List<String> lore = new ArrayList<String>();
-				 						lore.add("" + keycode);
-				 						itemMeta.setLore(lore);
-				 						itemInHand.setItemMeta(itemMeta);
-				 						p.updateInventory();
-			 						}
-			 					}
-			 				}
-			 			}
 			 		}
+//			 		else if(b.getType() == Material.WOODEN_DOOR || b.getType() == Material.IRON_DOOR_BLOCK){
+//			 			if(itemInHand.hasItemMeta()){
+//			 				if(itemInHand.getType() == Material.NETHER_BRICK_ITEM && itemInHand.getItemMeta().getDisplayName().equals(Colors.WHITE + "Schlüssel")){
+//			 					if(b.getMetadata("keycode").size() != 0){
+//			 						if(itemInHand.getItemMeta().getLore() != null){
+//				 						String keycodeString = b.getMetadata("keycode").get(0).asString();
+//				 						String keycodeItemString = itemInHand.getItemMeta().getLore().get(0);
+//				 						
+//				 						if(Integer.parseInt(keycodeItemString) != Integer.parseInt(keycodeString)){
+//				 							event.setCancelled(true);
+//				 						}
+//			 						}
+//			 					}else{
+//			 						if(itemInHand.getItemMeta().getLore() == null){
+//				 						int keycode = random.nextInt(999999);
+//				 						b.setMetadata("keycode", new FixedMetadataValue(ShinigamiLife.getJavaPlugin(), keycode));
+//				 						
+//				 						ItemMeta itemMeta = itemInHand.getItemMeta();
+//				 						List<String> lore = new ArrayList<String>();
+//				 						lore.add("" + keycode);
+//				 						itemMeta.setLore(lore);
+//				 						itemInHand.setItemMeta(itemMeta);
+//				 						p.updateInventory();
+//			 						}
+//			 					}
+//			 				}
+//			 			}
+//			 		}
 					
 					return;
 				}

@@ -15,122 +15,122 @@ import com.shinigami.sessions.Session;
 import com.shinigami.utils.Colors;
 import com.shinigami.utils.Utils;
 
-public class AccountMenu extends Menu{
+public class MenuAccount extends Menu{
 
 	private Inventory menu;
 	private ItemStack glassPaneItem, account1Item, account2Item, account3Item;
 	
 	private final String title = "Character ";
 	
-	public AccountMenu() {
+	public MenuAccount() {
 		createItems();
 	}
 	
 	private void createItems(){
 		glassPaneItem = new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.GRAY.getData());
-		glassPaneItem.setItemMeta(Utils.changeItemMeta(glassPaneItem, Colors.BLACK + "  .", new String[] {}));
+		Utils.changeItemMeta(glassPaneItem, Colors.BLACK + "  .", new String[] {});
 	}
 	
 	private void createInventory(Player p, Session session){
 		if(session.getAccCount() == 3){
 			if(session.getAcc1Profession().equals("civ")){
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.PLAYER.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()}));
+				Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()});
 			}else if(session.getAcc1Profession().equals("cop")){
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.SKELETON.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()}));
+				Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()});
 			}else if(session.getAcc1Profession().equals("reb")){
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.ZOMBIE.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()}));
+				Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()});
 			}else{
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "No Account N°1" + Colors.BLACK + "  .", new String[] {}));
+				Utils.changeItemMeta(account1Item, "No Account N°1" + Colors.BLACK + "  .", new String[] {});
 			}
 			
 			if(session.getAcc2Profession().equals("civ")){
 				account2Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.PLAYER.ordinal());
-				account2Item.setItemMeta(Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()}));
+				Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()});
 			}else if(session.getAcc2Profession().equals("cop")){
 				account2Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.SKELETON.ordinal());
-				account2Item.setItemMeta(Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()}));
+				Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()});
 			}else if(session.getAcc2Profession().equals("reb")){
 				account2Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.ZOMBIE.ordinal());
-				account2Item.setItemMeta(Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()}));
+				Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()});
 			}else{
 				account2Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-				account2Item.setItemMeta(Utils.changeItemMeta(account2Item, "No Account N°2" + Colors.BLACK + "  .", new String[] {}));
+				Utils.changeItemMeta(account2Item, "No Account N°2" + Colors.BLACK + "  .", new String[] {});
 			}
 			
 			if(session.getAcc3Profession().equals("civ")){
 				account3Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.PLAYER.ordinal());
-				account3Item.setItemMeta(Utils.changeItemMeta(account3Item, "Character name: " + session.getAcc3CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc3Money(), "Profession: " + session.getAcc3Profession()}));
+				Utils.changeItemMeta(account3Item, "Character name: " + session.getAcc3CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc3Money(), "Profession: " + session.getAcc3Profession()});
 			}else if(session.getAcc3Profession().equals("cop")){
 				account3Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.SKELETON.ordinal());
-				account3Item.setItemMeta(Utils.changeItemMeta(account3Item, "Character name: " + session.getAcc3CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc3Money(), "Profession: " + session.getAcc3Profession()}));
+				Utils.changeItemMeta(account3Item, "Character name: " + session.getAcc3CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc3Money(), "Profession: " + session.getAcc3Profession()});
 			}else if(session.getAcc3Profession().equals("reb")){
 				account3Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.ZOMBIE.ordinal());
-				account3Item.setItemMeta(Utils.changeItemMeta(account3Item, "Character name: " + session.getAcc3CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc3Money(), "Profession: " + session.getAcc3Profession()}));
+				Utils.changeItemMeta(account3Item, "Character name: " + session.getAcc3CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc3Money(), "Profession: " + session.getAcc3Profession()});
 			}else{
 				account3Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-				account3Item.setItemMeta(Utils.changeItemMeta(account3Item, "No Account N°3" + Colors.BLACK + "  .", new String[] {}));
+				Utils.changeItemMeta(account3Item, "No Account N°3" + Colors.BLACK + "  .", new String[] {});
 			}
 		}else if(session.getAccCount() == 2){
 			if(session.getAcc1Profession().equals("civ")){
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.PLAYER.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()}));
+				Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()});
 			}else if(session.getAcc1Profession().equals("cop")){
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.SKELETON.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()}));
+				Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()});
 			}else if(session.getAcc1Profession().equals("reb")){
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.ZOMBIE.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()}));
+				Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()});
 			}else{
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "No Account N°1" + Colors.BLACK + "  .", new String[] {}));
+				Utils.changeItemMeta(account1Item, "No Account N°1" + Colors.BLACK + "  .", new String[] {});
 			}
 			
 			if(session.getAcc2Profession().equals("civ")){
 				account2Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.PLAYER.ordinal());
-				account2Item.setItemMeta(Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()}));
+				Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()});
 			}else if(session.getAcc2Profession().equals("cop")){
 				account2Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.SKELETON.ordinal());
-				account2Item.setItemMeta(Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()}));
+				Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()});
 			}else if(session.getAcc2Profession().equals("reb")){
 				account2Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.ZOMBIE.ordinal());
-				account2Item.setItemMeta(Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()}));
+				Utils.changeItemMeta(account2Item, "Character name: " + session.getAcc2CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc2Money(), "Profession: " + session.getAcc2Profession()});
 			}else{
 				account2Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-				account2Item.setItemMeta(Utils.changeItemMeta(account2Item, "No Account N°2" + Colors.BLACK + "  .", new String[] {}));
+				Utils.changeItemMeta(account2Item, "No Account N°2" + Colors.BLACK + "  .", new String[] {});
 			}
 			
 			account3Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-			account3Item.setItemMeta(Utils.changeItemMeta(account3Item, "No Account N°3" + Colors.BLACK + "  .", new String[] {}));
+			Utils.changeItemMeta(account3Item, "No Account N°3" + Colors.BLACK + "  .", new String[] {});
 		}else if(session.getAccCount() == 1){
 			if(session.getAcc1Profession().equals("civ")){
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.PLAYER.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()}));
+				Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()});
 			}else if(session.getAcc1Profession().equals("cop")){
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.SKELETON.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()}));
+				Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()});
 			}else if(session.getAcc1Profession().equals("reb")){
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.ZOMBIE.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()}));
+				Utils.changeItemMeta(account1Item, "Character name: " + session.getAcc1CharName() + Colors.BLACK + "  .", new String[] {"Money: " + session.getAcc1Money(), "Profession: " + session.getAcc1Profession()});
 			}else{
 				account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-				account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "No Account N°3" + Colors.BLACK + "  .", new String[] {}));
+				Utils.changeItemMeta(account1Item, "No Account N°3" + Colors.BLACK + "  .", new String[] {});
 			}
 			
 			account2Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-			account2Item.setItemMeta(Utils.changeItemMeta(account2Item, "No Account N°2" + Colors.BLACK + "  .", new String[] {}));
+			Utils.changeItemMeta(account2Item, "No Account N°2" + Colors.BLACK + "  .", null);
 			account3Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-			account3Item.setItemMeta(Utils.changeItemMeta(account3Item, "No Account N°3" + Colors.BLACK + "  .", new String[] {}));
+			Utils.changeItemMeta(account3Item, "No Account N°3" + Colors.BLACK + "  .", null);
 		}else{
 			account1Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-			account1Item.setItemMeta(Utils.changeItemMeta(account1Item, "No Account N°1" + Colors.BLACK + "  .", new String[] {}));
+			Utils.changeItemMeta(account1Item, "No Account N°1" + Colors.BLACK + "  .", null);
 			account2Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-			account2Item.setItemMeta(Utils.changeItemMeta(account2Item, "No Account N°2" + Colors.BLACK + "  .", new String[] {}));
+			Utils.changeItemMeta(account2Item, "No Account N°2" + Colors.BLACK + "  .", null);
 			account3Item = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.WITHER.ordinal());
-			account3Item.setItemMeta(Utils.changeItemMeta(account3Item, "No Account N°3" + Colors.BLACK + "  .", new String[] {}));
+			Utils.changeItemMeta(account3Item, "No Account N°3" + Colors.BLACK + "  .", null);
 		}
 		
 		menu.addItem(glassPaneItem);
