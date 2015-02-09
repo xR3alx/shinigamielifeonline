@@ -3,10 +3,13 @@ package com.shinigami.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import net.minecraft.server.v1_8_R1.NBTTagCompound;
+import net.minecraft.server.v1_8_R1.NBTTagList;
 
 import org.bukkit.Color;
 import org.bukkit.entity.Damageable;
@@ -153,5 +156,4 @@ public class Utils {
 		}
 		return props;
 	}
-	
 }

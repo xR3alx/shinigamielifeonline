@@ -1,4 +1,4 @@
-package com.shinigami.menus;
+package com.shinigami.menu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,25 +8,30 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.shinigami.menu.menus.MenuATM;
+import com.shinigami.menu.menus.MenuAccount;
 import com.shinigami.sessions.Session;
 import com.shinigami.utils.DebugMessages;
 import com.shinigami.utils.SellInventory;
 
 public class MenuManager {
 
+	private MenuLoader menuLoader;
+	
 	private HashMap<String, Menu> menus;
 	private ArrayList<SellInventory> sellInventories;
 	
 	public MenuManager(){
 		sellInventories = new ArrayList<SellInventory>();
 		menus = new HashMap<String, Menu>();
+		menuLoader = new MenuLoader();
 		
 		boolean loaded = false;
 		while(!loaded){
 			menus.put("menu_account", new MenuAccount());
+			menus.put("atm", new MenuATM());
 			
-			menus.put("shop_clothing_tab1", new ShopClothing(1));
-			menus.put("shop_clothing_tab2", new ShopClothing(2));
+			menuLoader.load(menus);
 			
 			loaded = true;
 		}

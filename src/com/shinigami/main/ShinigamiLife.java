@@ -28,7 +28,7 @@ import com.shinigami.listener.UtilsListener;
 import com.shinigami.listener.VehicleListener;
 import com.shinigami.locations.LocationsManager;
 import com.shinigami.npcs.NPCManager;
-import com.shinigami.menus.MenuManager;
+import com.shinigami.menu.MenuManager;
 import com.shinigami.police.PoliceManager;
 import com.shinigami.police.TicketManager;
 import com.shinigami.regions.RegionsManager;

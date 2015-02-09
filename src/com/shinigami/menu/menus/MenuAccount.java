@@ -1,4 +1,4 @@
-package com.shinigami.menus;
+package com.shinigami.menu.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.shinigami.main.ShinigamiLife;
+import com.shinigami.menu.Menu;
 import com.shinigami.sessions.Session;
 import com.shinigami.utils.Colors;
 import com.shinigami.utils.Utils;
@@ -20,7 +21,7 @@ public class MenuAccount extends Menu{
 	private Inventory menu;
 	private ItemStack glassPaneItem, account1Item, account2Item, account3Item;
 	
-	private final String title = "Character ";
+	private final String title = "             Character";
 	
 	public MenuAccount() {
 		createItems();
